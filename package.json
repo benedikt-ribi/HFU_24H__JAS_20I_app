@@ -1,0 +1,15 @@
+{
+  "name": "hfu_24h__jas_20i_app",
+  "version": "1.0.0",
+  "description": "Javascriptrepository",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
