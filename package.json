@@ -1,0 +1,44 @@
+{
+  "name": "js_app",
+  "version": "1.0.0",
+  "description": "A demo app",
+  "scripts": {
+    "test": "jest",
+    "2021-test-server": "json-server app-2021/tests/tests.json --watch --port 3001",
+    "2021-server": "json-server ./app-2021/data.json --watch --port 3000",
+    "2021-client": "npx http-server ./app-2021 --port 8081",
+    "2021-js-vite-react": "pushd app-2021/vite-react-js && npm run dev && popd",
+    "2021-ts-vite-react": "pushd app-2021/vite-react-ts && npm run dev && popd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvonballmo/HFU_21H__JAS_20I_app.git"
+  },
+  "author": "Marco von Ballmoos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mvonballmo/HFU_21H__JAS_20I_app/issues"
+  },
+  "homepage": "https://github.com/mvonballmo/HFU_21H__JAS_20I_app#readme",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.5",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.23.6",
+    "@babel/preset-react": "^7.16.7",
+    "@jest/globals": "^27.4.0",
+    "@tsconfig/recommended": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "babel-jest": "^27.3.1",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "http-server": "^14.0.0",
+    "isomorphic-fetch": "^3.0.0",
+    "jest": "^27.3.1",
+    "json-server": "^0.17.4",
+    "prettier": "^2.4.1",
+    "typescript": "^4.5.2"
+  }
+}
