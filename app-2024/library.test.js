@@ -20,22 +20,22 @@ describe("library", () => {
   });
 
   test("call fetch gets addresses", () => {
-    return fetch("http://localhost:3000/addresses")
+    return fetch("http://localhost:20242/addresses")
       .then(data => data.json())
       .then(addresses => {
-        expect(addresses.length).toBe(3);
+        expect(addresses.length).toBe(2);
       });
   });
 
   test("call fetch with async/await", async () => {
-    const response = await fetch("http://localhost:3000/addresses");
+    const response = await fetch("http://localhost:20242/addresses");
     const addresses = await response.json();
 
-    expect(addresses.length).toBe(3);
+    expect(addresses.length).toBe(2);
   });
 
   test("call fetch for one address", async () => {
-    const response = await fetch("http://localhost:3000/addresses/2");
+    const response = await fetch("http://localhost:20242/addresses/2");
     const johann = await response.json();
 
     expect(johann.firstName).toBe("Johann");
@@ -47,36 +47,80 @@ describe("library", () => {
       lastName: "Jones",
     };
 
-    const response = await fetch("http://localhost:3000/addresses/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(address),
-    });
+    let newAddressId;
 
-    expect(response.ok).toBeTruthy();
+    try {
+      const response = await fetch("http://localhost:20242/addresses/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(address),
+      });
 
-    const newAddress = await response.json();
+      expect(response.ok).toBeTruthy();
 
-    expect(newAddress.id).toBeTruthy();
+      const newAddress = await response.json();
+
+      newAddressId = newAddress.id;
+
+      expect(newAddressId).toBeTruthy();
+    } finally {
+      await fetch(`http://localhost:20242/addresses/${newAddressId}`, {
+        method: "DELETE",
+      });
+    }
   });
 
-  function getAddresses() {
-    return fetch("http://localhost:3000/addresses");
-  }
+  test("update address", async () => {
+    const address = {
+      firstName: "Bob",
+      lastName: "Jones",
+    };
 
-  function getCars() {
-    return fetch("http://localhost:3000/cars");
-  }
+    let newAddressId;
 
-  // ignore("wait for multiple fetch calls", async () => {
-  //   const p1 = await fetch("http://localhost:3000/addresses");
-  //   const p2 = await fetch("http://localhost:3000/cars");
+    try {
+      const response = await fetch("http://localhost:20242/addresses/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(address),
+      });
 
-  //   const [addresses, cars] = await Promise.all([p1, p2]);
+      expect(response.ok).toBeTruthy();
 
-  //   expect(addresses.length).toBe(3);
-  //   expect(cars.length).toBe(3);
-  // });
+      const newAddress = await response.json();
+
+      newAddressId = newAddress.id;
+
+      address.lastName = "Müller";
+
+      const putResponse = await fetch(`http://localhost:20242/addresses/${newAddressId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(address),
+      });
+
+      expect(putResponse.ok).toBeTruthy();
+
+      const updatedAddress = await putResponse.json();
+
+      expect(updatedAddress.lastName).toBe("Müller");
+
+      const getResponse = await fetch(`http://localhost:20242/addresses/${newAddressId}`);
+      const bob = await getResponse.json();
+
+      expect(getResponse.ok).toBeTruthy();
+
+      expect(bob.lastName).toBe("Müller");
+    } finally {
+      await fetch(`http://localhost:20242/addresses/${newAddressId}`, {
+        method: "DELETE",
+      });
+    }
+  });
 });
