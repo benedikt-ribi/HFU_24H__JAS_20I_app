@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest"
   },
-  "author": "Marco von Ballmoos",
+  "author": "Benedikt Ribi",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.23.5",

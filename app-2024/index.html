@@ -3,23 +3,32 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Demo</title>
+  <title>App 2024</title>
   <script type="module">
-    import { show, increment, decrement } from './library.js';
+    const getAndShowAddresses = async () => {
+      const response = await fetch("http://localhost:20241/addresses");
+      const addresses = await response.json();
 
-    window.add = () => {
-      show(increment())
-    };
+      const addressListElement = document.getElementById("addresses");
+      const addressText = addresses.map(a => `${a.firstName} ${a.lastName}`).join("\n");
 
-    window.subtract = () => {
-      show(decrement())
-    };
+      const addressesText = document.createTextNode(addressText);
+
+      addressListElement.textContent = "";
+      addressListElement.appendChild(addressesText);
+    }
+
+    const getAndShowButton = document.getElementById("showButton");
+
+    getAndShowButton.addEventListener("click", getAndShowAddresses);
   </script>
 </head>
 
 <body>
-  <button onclick="add()">+</button>
-  <button onclick="subtract()">-</button>
+  <button id="showButton">Get and show addresses</button>
 </body>
+
+<div id="addresses" style="background: cornsilk; min-height: 100px;">
+</div>
 
 </html>
