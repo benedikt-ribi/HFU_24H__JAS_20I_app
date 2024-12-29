@@ -90,6 +90,7 @@ describe("LK1", () => {
       const user = {
         name: "bob",
         password: "password123",
+        // Das Teil hier war nicht nötig, schadet aber nicht.
         toJSON(key) {
           return this;
         },
@@ -105,6 +106,7 @@ describe("LK1", () => {
       const user = {
         name: "bob",
         password: "password123",
+        // Das Teil hier war nicht nötig, schadet aber nicht.
         toJSON(key) {
           return this;
         },
@@ -127,17 +129,13 @@ describe("LK1", () => {
         name: "bob",
         password: "password123",
         toJSON(key) {
-          return this;
+          // Geht auch so...
+          const { password, ...rest } = this;
+          return rest;
         },
       };
 
-      const userAsJson = JSON.stringify(user, function (key, value) {
-        if (key == "password") {
-          return;
-        } else {
-          return value;
-        }
-      }, 2);
+      const userAsJson = JSON.stringify(user, null, 2);
 
       // Do not change this expectation; fix the output above
       expect(userAsJson).toBe(
@@ -279,7 +277,8 @@ describe("LK1", () => {
       const birthDate = new Date(2000, 7, 1);
       const schoolName = "HFU";
 
-      const teacher = new Person(firstName, middleName, lastName, birthDate, schoolName);
+      // Hier war's Person statt Teacher
+      const teacher = new Teacher(firstName, middleName, lastName, birthDate, schoolName);
 
       expect(teacher.firstName).toBe(firstName);
       expect(teacher.middleName).toBe(middleName);
@@ -295,7 +294,8 @@ describe("LK1", () => {
       const birthDate = new Date(2000, 7, 1);
       const schoolName = "HFU";
 
-      const teacher = new Teacher(firstName, middleName, lastName, birthDate);
+      // Hier fehlte "schoolName"
+      const teacher = new Teacher(firstName, middleName, lastName, birthDate, schoolName);
 
       expect(teacher.firstName).toBe(firstName);
       expect(teacher.middleName).toBe(middleName);

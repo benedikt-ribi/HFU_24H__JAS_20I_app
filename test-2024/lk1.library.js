@@ -14,13 +14,14 @@ export class Person {
   age() {
     return new Date().getFullYear() - this.birthDate.getFullYear();
   }
-  
+
   toString() {
     return this.fullName();
   }
 }
 
 export class Teacher extends Person {
+  // Schoolname gehört eigentlich hier, nicht in Person
   constructor(firstName, middleName, lastName, birthDate, schoolName) {
     super(firstName, middleName, lastName, birthDate, schoolName);
   }
@@ -49,12 +50,14 @@ export function getCapitalized(test) {
 
 export function getOddCapitalized(test) {
   return test.map((t, i) => {
+    // if (i % 2 === 1) wäre einfacher und klarer gewesen.
     if (i++ % 2 != 0) {
       return t.toUpperCase();
+    // else ist nicht nötig
     } else {
       return t;
     }
-    
+
   });
 }
 
@@ -71,6 +74,14 @@ export const getFibonacci = n => {
 };
 
 export function* getFibonacciSequence() {
+    // Ja, OK. Man hätte yield 0 mit yield getFibonacci() ersetzen können.
+    // let i = 0;
+    // while (i >= 0) {
+    //   yield getFibonacci(i); // <-- hier.
+
+    //   i += 1;
+    // }
+
     yield 0;
     yield 1;
     yield 1;
@@ -82,6 +93,7 @@ export function* getFibonacciSequence() {
 }
 
 export function getCopyOfArray(a) {
+  // return a.slice() wäre einfacher gewesen.
   const copyValue = new Array();
   for (let i = 0; i < a.length; i++) {
     copyValue.push(a[i]);
@@ -93,11 +105,8 @@ export function getJsonWithNiceFormattingAndNoNumbers(obj) {
   return JSON.stringify(
     obj,
     (k, v) => {
-      if(k == "age"){
-        return;
-      } else {
-        return typeof v === 0 ? undefined : v;
-      }
+      // Deine Lösung funktioniert für die Test, ist aber nicht generisch genug
+      return typeof v === "number" ? undefined : v;
     },
     2,
   );
@@ -138,6 +147,8 @@ export function strictDivide(numerator, denominator) {
 
 export function safeDivide(numerator, denominator) {
   try {
+    // Auch wieder interessant! Aber bei deiner Lösung dividiert man zwei mal.
+    // Du hättest auch ein return vor strictDivide(...) schreiben können.
     strictDivide(numerator, denominator);
     return divide(numerator, denominator);
   } catch {
@@ -152,6 +163,12 @@ export function getObjectWithAOnly(obj) {
 }
 
 export function getObjectWithAllButA(obj) {
+  // Funktioniert aber nur für das gegebene Objekt aus der Test
+  // Eine bessere Lösung wäre
+  // const { a, ...rest } = obj;
+
+  // return rest;
+
   const { b, c } = obj;
 
   return { b, c };
