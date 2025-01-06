@@ -15,14 +15,14 @@ describe("LK2", () => {
       </div>
     `;
 
-      const button = document;
+      const button = document.getElementById("a");
 
       expect(button.id).toBe("a");
       expect(button.tagName).toBe("BUTTON");
       expect(button.className).toBe("primary hl");
       expect([...button.classList]).toEqual(["primary", "hl"]);
-      expect(button.innerHTML).toBe(`<span class="strong">Test</span>`);
-      expect(button.outerHTML).toBe(`<button id="a" class="primary hl"><span class="strong">Test</span></button>`);
+      expect(button.innerHTML.trim()).toBe(`<span class="strong">Test</span>`.trim());
+      expect(button.outerHTML.trim()).toBe(`<button id="a" class="primary hl"><span class="strong">Test</span></button>`.trim());
     });
   });
 
@@ -38,9 +38,12 @@ describe("LK2", () => {
       const button = div.firstElementChild;
 
       let clicks = [];
+      let t;
 
       function handleAndPassClick(e) {
         clicks.push(e.currentTarget.nodeName);
+        e.stopPropagation();
+        clearInterval(t);
       }
 
       function handleClick(e) {
@@ -75,9 +78,10 @@ describe("LK2", () => {
 
       function handleClick(e) {
         clicks.push(e.currentTarget.nodeName);
+        e.stopPropagation();
       }
 
-      document.addEventListener("click", handleClick, { capture: false });
+      document.addEventListener("click", handleClick, { capture: true });
       try {
         div.addEventListener("click", handleClick);
         button.addEventListener("click", handleClick);
@@ -86,10 +90,9 @@ describe("LK2", () => {
 
         expect(clicks).toEqual(["#document"]);
       } finally {
-        // It doesn't matter if document event-listeners in other tests are still attached,
-        // but this one captures all events and then stops propagation, which breaks the
-        // expectation in the next text (for preventDefault())
-        document.removeEventListener("click", handleClick, { capture: false });
+        div.removeEventListener("click", handleClick);
+        button.removeEventListener("click", handleClick);
+        document.removeEventListener("click", handleClick, { capture: true });
       }
     });
   });
@@ -99,7 +102,7 @@ describe("LK2", () => {
       document.body.innerHTML = `
       <form id="vehicles">
         <input type="text">
-        <input id="firstName" type="text">
+        <input id="firstName" type="text" disabled>
         <select id="numCars">
           <option id="one">One</option>
           <option id="two">Two</option>
@@ -108,7 +111,7 @@ describe("LK2", () => {
       </form>
     `;
 
-      let firstNameInput = document.getElementsByTagName("form")[0].getElementsByTagName("input")[0];
+      let firstNameInput = document.getElementById("firstName");
 
       expect(firstNameInput.id).toBe("firstName");
       expect(firstNameInput.disabled).toBeTruthy();
@@ -164,7 +167,7 @@ describe("LK2", () => {
 
       for (const pair of document.cookie.split(";")) {
         const [key, value] = pair.trim().split("=");
-        cookie[key] = value;
+        cookie[key] = decodeURIComponent(value);
       }
       return cookie;
     }
@@ -197,11 +200,12 @@ describe("LK2", () => {
         },
       };
 
-      document.cookie = "???";
+      document.cookie = `person=${encodeURIComponent(JSON.stringify(person))}`;
 
-      expect(document.cookie).toMatchSnapshot();
+      const decodedCookie = decodeURIComponent(document.cookie.split("=")[1]);
+      expect(JSON.parse(decodedCookie)).toEqual(person);
 
-      const loadedPerson = JSON.parse(getCookieObject()["person"]);
+      const loadedPerson = JSON.parse(decodeURIComponent(getCookieObject()["person"]));
 
       expect(loadedPerson.first).toBe("Bob");
       expect(loadedPerson.last).toBe("Hoffman");
@@ -256,7 +260,7 @@ describe("LK2", () => {
         counter += 1;
 
         if (counter > 3) {
-          // what do you do to stop the interval?
+          clearInterval(t);
         }
       }, 100);
 
