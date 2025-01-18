@@ -21,8 +21,8 @@ describe("LK2", () => {
       expect(button.tagName).toBe("BUTTON");
       expect(button.className).toBe("primary hl");
       expect([...button.classList]).toEqual(["primary", "hl"]);
-      expect(button.innerHTML.trim()).toBe(`<span class="strong">Test</span>`.trim());
-      expect(button.outerHTML.trim()).toBe(`<button id="a" class="primary hl"><span class="strong">Test</span></button>`.trim());
+      expect(button.innerHTML).toBe(`<span class="strong">Test</span>`);
+      expect(button.outerHTML).toBe(`<button id="a" class="primary hl"><span class="strong">Test</span></button>`);
     });
   });
 
@@ -38,12 +38,10 @@ describe("LK2", () => {
       const button = div.firstElementChild;
 
       let clicks = [];
-      let t;
 
       function handleAndPassClick(e) {
         clicks.push(e.currentTarget.nodeName);
         e.stopPropagation();
-        clearInterval(t);
       }
 
       function handleClick(e) {
@@ -177,15 +175,15 @@ describe("LK2", () => {
     });
 
     test("get key/value pairs", () => {
-      document.cookie = "something=John";
-      document.cookie = "expertMode=1";
+      document.cookie = "lastUsername=John";
+      document.cookie = "expertMode=true";
 
       expect(getCookieMap()).toMatchSnapshot();
     });
 
     test("get values in object", () => {
-      document.cookie = "something=Mark";
-      document.cookie = "expertMode=John";
+      document.cookie = "lastUsername=John";
+      document.cookie = "expertMode=true";
 
       expect(getCookieObject()).toMatchSnapshot();
     });
@@ -200,10 +198,9 @@ describe("LK2", () => {
         },
       };
 
-      document.cookie = `person=${encodeURIComponent(JSON.stringify(person))}`;
+      document.cookie = `person=${JSON.stringify(person)}`;
 
-      const decodedCookie = decodeURIComponent(document.cookie.split("=")[1]);
-      expect(JSON.parse(decodedCookie)).toEqual(person);
+      expect(document.cookie).toMatchSnapshot();
 
       const loadedPerson = JSON.parse(decodeURIComponent(getCookieObject()["person"]));
 
@@ -227,7 +224,8 @@ describe("LK2", () => {
         }
       }
 
-      localStorage.setItem("lastUsername", "Bob");
+      localStorage.setItem("lastUsername", "John");
+      localStorage.setItem("expertMode", "true");
 
       const local = [...getLocalStorageItems()];
 
@@ -247,6 +245,8 @@ describe("LK2", () => {
       }
 
       // Hint: Does this test even set anything in the localStorage yet?
+      localStorage.setItem("lastUsername", "John");
+      localStorage.setItem("expertMode", "true");
 
       expect(getLocalStorageAsObject()).toMatchSnapshot();
     });
