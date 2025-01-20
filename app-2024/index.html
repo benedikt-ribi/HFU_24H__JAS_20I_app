@@ -20,6 +20,7 @@
     const firstName = document.getElementById("firstName");
     const lastName = document.getElementById("lastName");
     const age = document.getElementById("age");
+    const id = document.getElementById("id");
 
     /**
      * @type {HTMLFormElement}
@@ -54,7 +55,7 @@
         firstAddress.lastName = lastName.value;
         firstAddress.age = age.value;
 
-        const putResponse = await fetch(`http://localhost:20241/addresses/${firstAddress.id}`, {
+        const putResponse = await fetch(`http://localhost:20241/addresses/${id.value}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -120,6 +121,9 @@
 
     <label>Age</label>
     <input type="number" id="age" min=1 max=120 value="18" required>
+
+    <label>Id</label>
+    <input type="number" id="id" min=1 value="1" required>
 
     <button type="submit" id="saveButton">Save address</button>
 

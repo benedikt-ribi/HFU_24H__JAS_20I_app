@@ -3,13 +3,13 @@
     {
       "firstName": "Maria",
       "lastName": "Maria",
-      "age": 23,
+      "age": "18",
       "id": "1"
     },
     {
       "firstName": "Johann",
       "lastName": "Johann",
-      "age": 23,
+      "age": "18",
       "id": "2"
     }
   ],

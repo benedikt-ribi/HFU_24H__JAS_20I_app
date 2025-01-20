@@ -1,14 +1,15 @@
 {
   "addresses": [
     {
-      "firstName": "Maria",
-      "lastName": "KLasdjl",
-      "id": "1",
-      "age": "18"
+      "firstName": "Benedikt",
+      "lastName": "Ribi",
+      "age": "18",
+      "id": "1"
     },
     {
-      "firstName": "Johann",
-      "lastName": "Johann",
+      "firstName": "Laura",
+      "lastName": "Kralik",
+      "age": "25",
       "id": "2"
     }
   ]
