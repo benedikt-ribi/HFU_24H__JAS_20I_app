@@ -99,7 +99,7 @@
       newAddress.lastName = lastName.value;
       newAddress.age = age.value;
 
-      const postResponse = await fetch(`http://localhost:20241/addresses`, {
+      const postResponse = await fetch(`http://localhost:20241/addresses/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
