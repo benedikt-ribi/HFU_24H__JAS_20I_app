@@ -13,6 +13,9 @@
     function setUpButtons() {
       addClickHandler("showButton", getAndShowAddresses);
       addClickHandler("saveButton", saveAddress);
+      addClickHandler("deletButton", deleteAddress);
+      addClickHandler("addButton", addAddress);
+      addClickHandler("searchButton", searchLastName);
     }
 
     let firstAddress;
@@ -85,6 +88,46 @@
       }
     }
 
+    async function addAddress() {
+      const newAddress = {
+        firstName: "Vorname",
+        lastName: "Nachname",
+        age: 18,
+      };
+
+      newAddress.firstName = firstName.value;
+      newAddress.lastName = lastName.value;
+      newAddress.age = age.value;
+
+      const postResponse = await fetch(`http://localhost:20241/addresses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newAddress),
+      });
+
+      if (postResponse.ok) {
+        alert("Object added.");
+      }
+      else {
+        alert("Error while adding object.");
+      }
+    }
+
+    function searchLastName() {
+      const response = fetch(`http://localhost:20241/addresses?lastName=${lastName.value}`);
+      const addresses = response.json();
+
+      const addressListElement = document.getElementById("addresses");
+      const addressText = addresses.map(a => `${a.firstName} ${a.lastName} ${a.age}`).join("\n");
+
+      const addressesText = document.createTextNode(addressText);
+
+      addressListElement.textContent = "";
+      addressListElement.appendChild(addressesText);
+    }
+
     setUpButtons();
     await getAndShowAddresses();
 
@@ -139,6 +182,7 @@
     <button type="submit" id="saveButton">Save address</button>
     <div>
     <button id="showButton">Get and show addresses</button>
+    <button id="searchButton">Search last name</button>
     <button id="deletButton">Delet address</button>
     <button id="addButton">Add address</button>
     </div>
