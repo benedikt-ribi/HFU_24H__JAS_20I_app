@@ -1,5 +1,5 @@
 {
-  "name": "app-2024",
+  "name": "app-2025",
   "version": "1.0.0",
   "scripts": {
     "client": "npx http-server",
