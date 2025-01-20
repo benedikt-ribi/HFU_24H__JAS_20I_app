@@ -72,6 +72,19 @@
       }
     }
 
+    async function deleteAddress() {
+      const deleteResponse = await fetch(`http://localhost:20241/addresses/${id.value}`, {
+        method: "DELETE",
+      });
+
+      if (deleteResponse.ok) {
+        alert("Object deleted.");
+      }
+      else {
+        alert("Error while deleting object.");
+      }
+    }
+
     setUpButtons();
     await getAndShowAddresses();
 
@@ -106,15 +119,13 @@
 
 <body>
 
-  <button id="showButton">Get and show addresses</button>
-
   <div id="addresses" style="background: cornsilk; min-height: 100px;">
   </div>
 
   <h1>Address details</h1>
   <form id="detail">
     <label>First name</label>
-    <input list="firstNames" placeholder="Vorname" id="firstName" value="Vorname" required>
+    <input id="firstName" placeholder="Vorname" value="Vorname" required>
 
     <label>Last name</label>
     <input id="lastName" placeholder="Nachname" value="Nachname" required>
@@ -126,13 +137,12 @@
     <input type="number" id="id" min=1 value="1" required>
 
     <button type="submit" id="saveButton">Save address</button>
-
-    <datalist id="firstNames">
-      <option value="Joe"></option>
-      <option value="Jane"></option>
-      <option value="John"></option>
-      <option value="Jessica"></option>
-    </datalist>
+    <div>
+    <button id="showButton">Get and show addresses</button>
+    <button id="deletButton">Delet address</button>
+    <button id="addButton">Add address</button>
+    </div>
+  
   </form>
 
 </body>
