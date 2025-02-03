@@ -126,6 +126,12 @@
 
       addressListElement.textContent = "";
       addressListElement.appendChild(addressesText);
+
+      firstAddress = addresses[0];
+
+      firstName.value = firstAddress.firstName;
+      lastName.value = firstAddress.lastName;
+      age.value = firstAddress.age;
     }
 
     setUpButtons();
